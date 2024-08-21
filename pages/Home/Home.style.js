@@ -10,9 +10,4 @@ export const styles = StyleSheet.create({
   meteor_advance: {
     flex: 1,
   },
-  txt: {
-    color: "white",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
 });

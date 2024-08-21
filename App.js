@@ -6,17 +6,25 @@ import ImageBackGround from "./assets/background.png";
 import Home from "./pages/Home/Home";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync } from "expo-location";
 import { getWeatherData } from "./api/getWeatherData";
+import { useFonts } from "expo-font";
 
 export default function App() { 
   const [coordinates, setCoordinates] = useState();
   const [weatherData, setWeatherData] = useState();
   const debounceTimeout = useRef(null);
 
+  const [isFontLoaded] = useFonts({
+    "Alata-Regular": require("./assets/fonts/Alata-Regular.ttf"),
+  })
+
   const { latitude, longitude } = coordinates || {};
   const {temperature, interval} = weatherData?.current_weather || {};
 
   // console.log(temperature, 'temperature')
   // console.log(interval, 'interval')
+  // console.log(coordinates, 'coordinates');
+  // console.log(weatherData, 'weatherData');
+  // console.log(isFontLoaded, 'isFontLoaded') 
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -56,12 +64,10 @@ export default function App() {
       if (debounceTimeout.current) {
         clearTimeout(debounceTimeout.current);
       }
-      debounceTimeout.current = setTimeout(fetchWeatherData, 1000); // 1 second debounce
+      debounceTimeout.current = setTimeout(fetchWeatherData, 1000);
     }
   }, [latitude, longitude]);
 
-  // console.log(coordinates, 'coordinates');
-  console.log(weatherData, 'weatherData');
 
 
 
@@ -73,7 +79,7 @@ export default function App() {
     >
       <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
-          <Home />
+          {isFontLoaded && <Home />}
         </SafeAreaView>
       </SafeAreaProvider>
     </ImageBackground>
