@@ -6,11 +6,13 @@ import ImageBackGround from "./assets/background.png";
 import Home from "./pages/Home/Home";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync } from "expo-location";
 import { getWeatherData } from "./api/getWeatherData";
+import { getCityData } from "./api/getCityData";
 import { useFonts } from "expo-font";
 
 export default function App() { 
   const [coordinates, setCoordinates] = useState();
   const [weatherData, setWeatherData] = useState();
+  const [hood, setHood] = useState();
   const debounceTimeout = useRef(null);
 
   const [isFontLoaded] = useFonts({
@@ -18,13 +20,7 @@ export default function App() {
   })
 
   const { latitude, longitude } = coordinates || {};
-  const {temperature, interval} = weatherData?.current_weather || {};
-
-  // console.log(temperature, 'temperature')
-  // console.log(interval, 'interval')
-  // console.log(coordinates, 'coordinates');
-  // console.log(weatherData, 'weatherData');
-  // console.log(isFontLoaded, 'isFontLoaded') 
+  const city = hood?.address?.city || {};
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -68,7 +64,25 @@ export default function App() {
     }
   }, [latitude, longitude]);
 
+  useEffect(() => {
+    const fetchHoodData = async () => {
+      try {
+        if (latitude && longitude) {
+          const hoodData = await getCityData(latitude, longitude);
+          setHood(hoodData);
+        }
+      } catch (error) {
+        console.error("Error fetching hood data:", error);
+      }
+    };
+  
+    if (latitude && longitude) {
+      fetchHoodData();
+    }
+  }
+  , [latitude, longitude]);
 
+  console.log(city, 'city') 
 
 
   return (
@@ -79,7 +93,7 @@ export default function App() {
     >
       <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
-          {isFontLoaded && <Home />}
+          {isFontLoaded && weatherData && <Home weatherData={weatherData} city={city}/>}
         </SafeAreaView>
       </SafeAreaProvider>
     </ImageBackground>
