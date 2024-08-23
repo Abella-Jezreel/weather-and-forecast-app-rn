@@ -4,7 +4,7 @@ import Txt from "../Txt/txt";
 import { styles } from "./WeatherBasic.style";
 import { WEATHER_INTERPRETATIONS } from "../../utils/weather-utils";
 
-const WeatherBasic = ({ weather, city }) => {
+const WeatherBasic = ({ weather, city, quarter }) => {
   const [formattedTime, setFormattedTime] = useState("");
 
   const formatTime = (timeString) => {
@@ -53,7 +53,7 @@ const WeatherBasic = ({ weather, city }) => {
         <Txt style={styles.clock_txt}>{formattedTime}</Txt>
       </View>
       <View style={styles.city}>
-        <Txt>{city} City</Txt>
+        <Txt style={styles.city_txt}>{quarter}, {city}</Txt>
       </View>
       <View style={styles.interpretation}>
         <Txt style={styles.interpretation_txt}>{weatherLabel}</Txt>

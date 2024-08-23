@@ -4,12 +4,16 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { ImageBackground } from "react-native";
 import ImageBackGround from "./assets/background.png";
 import Home from "./pages/Home/Home";
-import { requestForegroundPermissionsAsync, getCurrentPositionAsync } from "expo-location";
+import {
+  requestForegroundPermissionsAsync,
+  getCurrentPositionAsync,
+} from "expo-location";
 import { getWeatherData } from "./api/getWeatherData";
 import { getCityData } from "./api/getCityData";
+import Loading from "./components/Loading.jsx";
 import { useFonts } from "expo-font";
 
-export default function App() { 
+export default function App() {
   const [coordinates, setCoordinates] = useState();
   const [weatherData, setWeatherData] = useState();
   const [hood, setHood] = useState();
@@ -17,10 +21,10 @@ export default function App() {
 
   const [isFontLoaded] = useFonts({
     "Alata-Regular": require("./assets/fonts/Alata-Regular.ttf"),
-  })
+  });
 
   const { latitude, longitude } = coordinates || {};
-  const city = hood?.address?.city || {};
+  const { city, quarter } = hood?.address || {};
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -30,7 +34,7 @@ export default function App() {
           console.log("Permission to access location was denied");
           return;
         }
-  
+
         const location = await getCurrentPositionAsync({});
         setCoordinates({
           latitude: location.coords.latitude,
@@ -40,10 +44,10 @@ export default function App() {
         console.error("Error fetching location:", error);
       }
     };
-  
+
     fetchLocation();
   }, []);
-  
+
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
@@ -55,7 +59,7 @@ export default function App() {
         console.error("Error fetching weather data:", error);
       }
     };
-  
+
     if (latitude && longitude) {
       if (debounceTimeout.current) {
         clearTimeout(debounceTimeout.current);
@@ -75,15 +79,13 @@ export default function App() {
         console.error("Error fetching hood data:", error);
       }
     };
-  
+
     if (latitude && longitude) {
       fetchHoodData();
     }
-  }
-  , [latitude, longitude]);
+  }, [latitude, longitude]);
 
-  console.log(city, 'city') 
-
+  console.log(city, "city");
 
   return (
     <ImageBackground
@@ -93,7 +95,11 @@ export default function App() {
     >
       <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
-          {isFontLoaded && weatherData && <Home weatherData={weatherData} city={city}/>}
+          {isFontLoaded && weatherData ? (
+            <Home weatherData={weatherData} city={city} quarter={quarter} />
+          ) : (
+            <Loading />
+          )}
         </SafeAreaView>
       </SafeAreaProvider>
     </ImageBackground>

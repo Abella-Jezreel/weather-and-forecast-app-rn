@@ -7,6 +7,9 @@ export const styles = StyleSheet.create({
   clock_txt: {
     fontSize: 20,
   },
+  city_txt: {
+    fontSize: 20,
+  },
   city: {},
   interpretation: {
     alignSelf: "flex-end",

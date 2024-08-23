@@ -21,7 +21,7 @@ export const WEATHER_INTERPRETATIONS = [
     },
     {
       codes: [95,96, 99],
-      label: "Thunderous",
+      label: "Thunder",
       image: require("../assets/thunder.png"),
     },
   ];
