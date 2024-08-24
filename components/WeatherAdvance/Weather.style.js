@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
   styledContainer: {
     alignItems: "center",
     gap: 10,
+    
   },
   styledLabel: {
     color: "white",

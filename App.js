@@ -1,17 +1,28 @@
 import React, { useEffect, useState, useRef } from "react";
 import { styles } from "./App.style";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { ImageBackground } from "react-native";
+import { View } from "react-native";
 import ImageBackGround from "./assets/background.png";
+import LoadingImg from "./assets/Load4.gif";
 import Home from "./pages/Home/Home";
+import ForeCast from "./pages/Forecast/ForeCast.jsx";
 import {
   requestForegroundPermissionsAsync,
   getCurrentPositionAsync,
 } from "expo-location";
 import { getWeatherData } from "./api/getWeatherData";
 import { getCityData } from "./api/getCityData";
-import Loading from "./components/Loading.jsx";
 import { useFonts } from "expo-font";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Loading from "./components/Loading.jsx";
+
+const Stack = createNativeStackNavigator();
+const navTheme = {
+  colors: {
+    background: "transparent",
+  },
+};
 
 export default function App() {
   const [coordinates, setCoordinates] = useState();
@@ -88,20 +99,24 @@ export default function App() {
   console.log(city, "city");
 
   return (
-    <ImageBackground
-      source={ImageBackGround}
-      style={styles.imageBackGround}
-      imageStyle={styles.imageStyle}
-    >
-      <SafeAreaProvider>
-        <SafeAreaView style={styles.container}>
-          {isFontLoaded && weatherData ? (
-            <Home weatherData={weatherData} city={city} quarter={quarter} />
-          ) : (
-            <Loading />
-          )}
-        </SafeAreaView>
-      </SafeAreaProvider>
-    </ImageBackground>
+    <NavigationContainer theme={navTheme}>
+      {!isFontLoaded || !weatherData ? (
+        <View style={styles.loadingContainer}>
+          <Loading />
+        </View>
+      ) : (
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{ headerShown: false }}
+        >
+          <Stack.Screen name="Home">
+            {() => (
+              <Home weatherData={weatherData} city={city} quarter={quarter} isFontLoaded={isFontLoaded}/>
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="Forecast">{() => <ForeCast />}</Stack.Screen>
+        </Stack.Navigator>
+      )}
+    </NavigationContainer>
   );
 }

@@ -10,4 +10,15 @@ export const styles = StyleSheet.create({
   meteor_advance: {
     flex: 1,
   },
+  imageBackGround : {
+    flex: 1,
+    backgroundColor: "black",
+  },
+  imageStyle: {
+    opacity: 0.75,
+  },
+  container: {
+    flex: 1,
+    padding: 10,
+  },
 });

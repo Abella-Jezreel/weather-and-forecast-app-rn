@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Image } from "react-native";
+import { View, Image, TouchableOpacity } from "react-native";
 import Txt from "../Txt/txt";
 import { styles } from "./WeatherBasic.style";
 import { WEATHER_INTERPRETATIONS } from "../../utils/weather-utils";
+import { useNavigation } from "@react-navigation/native";
 
 const WeatherBasic = ({ weather, city, quarter }) => {
   const [formattedTime, setFormattedTime] = useState("");
+  const nav = useNavigation();
 
   const formatTime = (timeString) => {
     const date = new Date(timeString);
@@ -53,13 +55,19 @@ const WeatherBasic = ({ weather, city, quarter }) => {
         <Txt style={styles.clock_txt}>{formattedTime}</Txt>
       </View>
       <View style={styles.city}>
-        <Txt style={styles.city_txt}>{quarter}, {city}</Txt>
+        <Txt style={styles.city_txt}>
+          {quarter}, {city}
+        </Txt>
       </View>
       <View style={styles.interpretation}>
         <Txt style={styles.interpretation_txt}>{weatherLabel}</Txt>
       </View>
       <View style={styles.temperature_box}>
-        <Txt style={styles.temperature}>{formattedTemperature}</Txt>
+        <TouchableOpacity
+          onPress={() => nav.navigate("Forecast", { city, quarter, ...weather })}
+        >
+          <Txt style={styles.temperature}>{formattedTemperature}</Txt>
+        </TouchableOpacity>
         {weatherImage && <Image source={weatherImage} style={styles.image} />}
       </View>
     </>
