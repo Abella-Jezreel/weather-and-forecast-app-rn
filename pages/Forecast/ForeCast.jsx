@@ -8,12 +8,11 @@ import React, { useState, useRef, useEffect } from "react";
 import Header from "../../components/Header/Header";
 import ForecastListItem from "../../components/ForecastListItem/ForecastListItem";
 
-const ForeCast = () => {
+const ForeCast = ({ weatherData }) => {
   const [isLoading, setIsLoading] = useState(true);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const nav = useNavigation();
   const { params } = useRoute();
-  console.log(params, "params");
   const { city, quarter, weather } = params;
 
   useEffect(() => {
@@ -43,10 +42,12 @@ const ForeCast = () => {
             <Animated.View
               style={{ ...styles.contentContainer, opacity: fadeAnim }}
             >
-              <TouchableOpacity onPress={() => nav.navigate("Home")}>
-              <Header city={city} quarter={quarter}/>
-              </TouchableOpacity>
-              <ForecastListItem weather={weather} />
+              <View style={{gap: 40}}>
+                <TouchableOpacity onPress={() => nav.navigate("Home")}>
+                  <Header city={city} quarter={quarter} />
+                </TouchableOpacity>
+                <ForecastListItem weather={weatherData} />
+              </View>
             </Animated.View>
           )}
         </SafeAreaView>

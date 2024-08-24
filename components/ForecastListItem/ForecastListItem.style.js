@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
     },
     date: {
         fontSize: 20,
+        textAlign: "center",
     },
     temperature: {
         fontSize: 20,

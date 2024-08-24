@@ -111,10 +111,17 @@ export default function App() {
         >
           <Stack.Screen name="Home">
             {() => (
-              <Home weatherData={weatherData} city={city} quarter={quarter} isFontLoaded={isFontLoaded}/>
+              <Home
+                weatherData={weatherData}
+                city={city}
+                quarter={quarter}
+                isFontLoaded={isFontLoaded}
+              />
             )}
           </Stack.Screen>
-          <Stack.Screen name="Forecast">{() => <ForeCast />}</Stack.Screen>
+          <Stack.Screen name="Forecast">
+            {() => <ForeCast weatherData={weatherData} />}
+          </Stack.Screen>
         </Stack.Navigator>
       )}
     </NavigationContainer>

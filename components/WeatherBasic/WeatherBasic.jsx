@@ -38,7 +38,6 @@ const WeatherBasic = ({ weather, city, quarter }) => {
   if (!weather || !weather.current_weather || !weather.current_weather_units) {
     return null;
   }
-  console.log(weather, "weather");
   const { temperature, time, weathercode } = weather?.current_weather || {};
   const { temperature: unit } = weather?.current_weather_units || {};
   const formattedTemperature = temperature
@@ -46,8 +45,6 @@ const WeatherBasic = ({ weather, city, quarter }) => {
     : "";
   const { label: weatherLabel, image: weatherImage } =
     getWeatherInterpretation(weathercode);
-
-  console.log(weatherLabel, "weatherLabel");
 
   return (
     <>
