@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
   image: {
     width: 100, // Adjust the width as needed
     height: 100, // Adjust the height as needed
+    borderRadius: '50%', // Adjust the borderRadius as needed
   },
 });
 

@@ -12,7 +12,7 @@ const Header = ({ city, quarter }) => {
           <Txt style={styles.back_btn}>{"<"}</Txt>
       </TouchableOpacity>
       <View style={styles.header_txt}>
-        <Txt >{quarter}, {city}</Txt>
+        <Txt >{city}</Txt>
         <Txt style={styles.subTitle}>7 day forecast</Txt>
       </View>
     </View>

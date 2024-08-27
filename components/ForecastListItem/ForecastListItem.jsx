@@ -39,7 +39,7 @@ const ForecastListItem = ({ weather }) => {
     <>
       {combinedData.map((day, index) => (
         <View style={styles.container} key={index}>
-          <Image source={cloud} style={{ width: 50, height: 50 }} />
+          <Image source={getWeatherInterpretation(day.weathercode).image} style={{ width: 50, height: 50 }} />
           <Txt style={styles.day}>{getDayAbbreviation(day.time)}</Txt>
           <Txt style={styles.date}>{formatDate(day.sunrise)}</Txt>
           <Txt style={styles.temperature}>{Math.round(day.temperature_2m_max)}°</Txt>

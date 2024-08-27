@@ -1,9 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { styles } from "./App.style";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { View } from "react-native";
-import ImageBackGround from "./assets/background.png";
-import LoadingImg from "./assets/Load4.gif";
+import { Alert, View } from "react-native";
 import Home from "./pages/Home/Home";
 import ForeCast from "./pages/Forecast/ForeCast.jsx";
 import {
@@ -12,6 +9,7 @@ import {
 } from "expo-location";
 import { getWeatherData } from "./api/getWeatherData";
 import { getCityData } from "./api/getCityData";
+import { getSearchLocation } from "./api/getSearchLocation.js";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -27,6 +25,7 @@ const navTheme = {
 export default function App() {
   const [coordinates, setCoordinates] = useState();
   const [weatherData, setWeatherData] = useState();
+  const [location, setLocation] = useState();
   const [hood, setHood] = useState();
   const debounceTimeout = useRef(null);
 
@@ -97,7 +96,35 @@ export default function App() {
   }, [latitude, longitude]);
 
   console.log(city, "city");
+  
+  const onSubmit = (location) => {
+    const fetchSearchLocation = async () => {
+      try {
+        const searchLocation = await getSearchLocation(location);
+        if (searchLocation && searchLocation.results && searchLocation.results.length > 0) {
+          setLocation(searchLocation);
+        } else {
+          Alert.alert("Invalid City name");
+        }
+      } catch (error) {
+        console.error("Error fetching search location:", error);
+      }
+    }
+  
+    fetchSearchLocation();
+  };
 
+  useEffect(() => {
+    if (location && location.results && location.results.length > 0) {
+      setCoordinates({
+        latitude: location.results[0].latitude,
+        longitude: location.results[0].longitude,
+      });
+    }
+  }, [location]);
+
+  console.log(location, "location");
+  
   return (
     <NavigationContainer theme={navTheme}>
       {!isFontLoaded || !weatherData ? (
@@ -116,6 +143,7 @@ export default function App() {
                 city={city}
                 quarter={quarter}
                 isFontLoaded={isFontLoaded}
+                onSubmit={onSubmit}
               />
             )}
           </Stack.Screen>

@@ -42,7 +42,7 @@ const ForeCast = ({ weatherData }) => {
             <Animated.View
               style={{ ...styles.contentContainer, opacity: fadeAnim }}
             >
-              <View style={{gap: 40}}>
+              <View style={{gap: 50}}>
                 <TouchableOpacity onPress={() => nav.navigate("Home")}>
                   <Header city={city} quarter={quarter} />
                 </TouchableOpacity>

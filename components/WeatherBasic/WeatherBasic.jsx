@@ -53,7 +53,7 @@ const WeatherBasic = ({ weather, city, quarter }) => {
       </View>
       <View style={styles.city}>
         <Txt style={styles.city_txt}>
-          {quarter}, {city}
+          {city}
         </Txt>
       </View>
       <View style={styles.interpretation}>
